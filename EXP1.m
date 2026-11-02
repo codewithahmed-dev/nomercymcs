@@ -1,0 +1,44 @@
+% Experiment 1: PN Sequence Generator
+% Using a 4-bit Linear Feedback Shift Register (LFSR)
+
+clc;
+clear;
+close all;
+
+% Initial state of the register
+reg = [1 0 0 1];
+
+% Number of PN bits to generate
+n = 15;
+
+% Array to store PN sequence
+pn = zeros(1, n);
+
+for i = 1:n
+
+    % Take the last bit as output
+    pn(i) = reg(4);
+
+    % XOR operation for feedback
+    feedback = xor(reg(4), reg(1));
+
+    % Shift register to the right
+    reg(4) = reg(3);
+    reg(3) = reg(2);
+    reg(2) = reg(1);
+
+    % Put feedback bit at first position
+    reg(1) = feedback;
+
+end
+
+% Display PN sequence
+disp('Generated PN Sequence:');
+disp(pn);
+
+% Plot the PN sequence
+stem(pn);
+title('PN Sequence');
+xlabel('Bit Number');
+ylabel('Amplitude');
+grid on;

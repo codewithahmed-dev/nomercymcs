@@ -1,0 +1,45 @@
+% Experiment 4: Effect of C/I Ratio on Cluster Size
+
+clc;
+clear;
+close all;
+
+% Possible cluster sizes
+N = [1 3 4 7 9 12];
+
+% Path loss exponent
+n = 4;
+
+% Number of co-channel interfering cells
+i0 = 6;
+
+% Empty array to store C/I values
+CI = [];
+
+for i = 1:length(N)
+
+    % Reuse distance ratio D/R = sqrt(3N)
+    Q = sqrt(3 * N(i));
+
+    % Calculate C/I ratio
+    CI(i) = (Q^n) / i0;
+
+end
+
+% Convert C/I ratio into dB
+CI_dB = 10 * log10(CI);
+
+% Display result
+disp('Cluster Size N:');
+disp(N);
+
+disp('C/I Ratio in dB:');
+disp(CI_dB);
+
+% Plot graph
+plot(N, CI_dB, '-o', 'LineWidth', 2);
+
+title('C/I Ratio vs Cluster Size');
+xlabel('Cluster Size N');
+ylabel('C/I Ratio in dB');
+grid on;

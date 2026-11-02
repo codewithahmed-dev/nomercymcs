@@ -1,0 +1,33 @@
+% Experiment 5: Generate Walsh Code using Hadamard Matrix
+
+clc;
+clear;
+close all;
+
+% Order of Hadamard matrix
+N = 4;
+
+% Generate Hadamard matrix
+H = hadamard(N);
+
+% Display Hadamard matrix
+disp('Hadamard Matrix:');
+disp(H);
+
+% Convert -1 values into 0 for binary Walsh codes
+Walsh = (H + 1) / 2;
+
+% Display Walsh codes
+disp('Walsh Codes:');
+disp(Walsh);
+
+% Plot Walsh codes
+figure;
+
+for i = 1:N
+    subplot(N,1,i);
+    stairs(Walsh(i,:), 'LineWidth', 2);
+    ylim([-0.5 1.5]);
+    title(['Walsh Code ', num2str(i)]);
+    grid on;
+end

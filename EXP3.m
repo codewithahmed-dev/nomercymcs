@@ -1,0 +1,100 @@
+% Experiment 3: CDMA Implementation
+
+clc;
+clear;
+close all;
+
+% Data bits of two users
+data1 = [1 0 1];
+data2 = [0 1 1];
+
+% Spreading codes
+code1 = [1 1 1 1];
+code2 = [1 -1 1 -1];
+
+% Convert binary data into bipolar form
+% 1 becomes +1 and 0 becomes -1
+data1_bipolar = 2*data1 - 1;
+data2_bipolar = 2*data2 - 1;
+
+% Empty transmitted signals
+signal1 = [];
+signal2 = [];
+
+% Spread User 1 data
+for i = 1:length(data1_bipolar)
+    signal1 = [signal1 data1_bipolar(i) * code1];
+end
+
+% Spread User 2 data
+for i = 1:length(data2_bipolar)
+    signal2 = [signal2 data2_bipolar(i) * code2];
+end
+
+% Combine both users
+cdma_signal = signal1 + signal2;
+
+% Display transmitted signals
+disp('User 1 Spread Signal:');
+disp(signal1);
+
+disp('User 2 Spread Signal:');
+disp(signal2);
+
+disp('Combined CDMA Signal:');
+disp(cdma_signal);
+
+% Recover User 1 data
+received1 = [];
+
+for i = 1:length(data1)
+
+    start_index = (i-1)*length(code1) + 1;
+    end_index = i*length(code1);
+
+    temp = cdma_signal(start_index:end_index);
+
+    % Correlation with User 1 code
+    value = sum(temp .* code1);
+
+    if value > 0
+        received1(i) = 1;
+    else
+        received1(i) = 0;
+    end
+end
+
+% Recover User 2 data
+received2 = [];
+
+for i = 1:length(data2)
+
+    start_index = (i-1)*length(code2) + 1;
+    end_index = i*length(code2);
+
+    temp = cdma_signal(start_index:end_index);
+
+    % Correlation with User 2 code
+    value = sum(temp .* code2);
+
+    if value > 0
+        received2(i) = 1;
+    else
+        received2(i) = 0;
+    end
+end
+
+% Display recovered data
+disp('Recovered User 1 Data:');
+disp(received1);
+
+disp('Recovered User 2 Data:');
+disp(received2);
+
+% Plot combined CDMA signal
+stem(cdma_signal);
+title('Combined CDMA Signal');
+xlabel('Chip Number');
+ylabel('Amplitude');
+grid on;
+
